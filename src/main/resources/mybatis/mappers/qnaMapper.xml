@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="qnaMapper">
+	<select id="qnaCount" resultType="java.lang.Integer"
+		parameterType="com.iu.s4.util.Pager">
+		select count(num) from qna
+		<choose>
+			<when test="kind == 'kindTitle'">
+				where title like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kindContents'">
+				where contents like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				where writer like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+	</select>
+	<select id="qnaList"
+		resultType="com.iu.s4.model.BoardQnaVO"
+		parameterType="com.iu.s4.util.Pager">
+		select * from (select N.*, rownum R from (select * from qna
+		<choose>
+			<when test="kind == 'kindSubject'">
+				where title like '%'||#{search}||'%'
+			</when>
+			<when test="kind == 'kindContents'">
+				where contents like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				where writer like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+		order by num desc ) N)
+		where R between #{startRow} and #{lastRow}
+	</select>
+</mapper>
