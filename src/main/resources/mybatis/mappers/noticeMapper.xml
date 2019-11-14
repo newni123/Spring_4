@@ -4,13 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="noticeMapper">
-	<insert id="boardWrite"
-		parameterType="com.iu.s4.model.BoardNoticeVO">
+	<select id="noticeSelect" resultType="noticeVO" parameterType="BoardVO">
+		select * from notice where num = #{num}
+	</select>
+	<delete id="noticeDelete" parameterType="noticeVO">
+		delete notice where num = #{num}	
+	</delete>
+	<update id="noticeUpdate" parameterType="BoardVO">
+		update notice set title = #{title},
+		writer=#{writer},contents=#{contents} where num = #{num}
+	</update>
+	<insert id="noticeWrite" parameterType="noticeVO">
 		insert into notice values
 		(board_seq.nextval,#{title},#{writer},#{contents},sysdate,0)
 	</insert>
-	<select id="boardCount" resultType="java.lang.Integer"
-		parameterType="com.iu.s4.util.Pager">
+	<select id="noticeCount" resultType="Integer"
+		parameterType="Pager">
 		select count(num) from notice
 		<choose>
 			<when test="kind == 'kindTitle'">
@@ -24,9 +33,8 @@
 			</otherwise>
 		</choose>
 	</select>
-	<select id="boardList"
-		resultType="com.iu.s4.model.BoardNoticeVO"
-		parameterType="com.iu.s4.util.Pager">
+	<select id="noticeList" resultType="NoticeVO"
+		parameterType="Pager">
 		select * from (select N.*, rownum R from (select * from notice
 		<choose>
 			<when test="kind == 'kindSubject'">

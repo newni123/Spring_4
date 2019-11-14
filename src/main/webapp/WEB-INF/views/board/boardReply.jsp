@@ -11,8 +11,9 @@
 	<c:import url="../layout/nav.jsp" />
 	<c:import url="../layout/boot.jsp" />
 	<h1>Write</h1>
-	<form action="${board}Write" method="post">
+	<form action="${board}Reply" method="post">
 		<div class="container">
+			<input type="hidden" name="num" value="${num}">
 			<h1>Notice input</h1>
 			<div class="form-group">
 				<label for="title">title:</label> <input type="text"

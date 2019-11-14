@@ -29,5 +29,16 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	<!-- <filter>
+		<filter-name>encode</filter-name>
+		<fliter-class>org.springframework.web.filter.CharacterEncodingFilter</fliter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>	
+	<filter-mapping>
+		<filter-name>encode</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
 </web-app>

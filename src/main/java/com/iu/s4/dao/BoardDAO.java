@@ -9,14 +9,20 @@ public interface BoardDAO {
 
 	// list
 	public List<BoardVO> boardList(Pager pager) throws Exception;
+
 	// select
-	public BoardVO boardSelect(int num) throws Exception; 
+	public BoardVO boardSelect(BoardVO boardVO) throws Exception;
+
 	// write
-	public int boardWrite(BoardVO boardVO) throws Exception; 
+	public int boardWrite(BoardVO boardVO) throws Exception;
+
 	// update
-	public int boardUpdate() throws Exception;
+	public int boardUpdate(BoardVO boardVO) throws Exception;
+
 	// delete
-	public int boardDelete() throws Exception;
+	public int boardDelete(BoardVO boardVO) throws Exception;
+
 	// count
-	public int boardCount(Pager pager) throws Exception; 
+	public int boardCount(Pager pager) throws Exception;
+
 }

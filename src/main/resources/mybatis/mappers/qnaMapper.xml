@@ -4,8 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="qnaMapper">
-	<select id="qnaCount" resultType="java.lang.Integer"
-		parameterType="com.iu.s4.util.Pager">
+	<update id="boardReplyUpdate" parameterType="QnaVO">
+		update qna set
+		step=step+1 where ref=#{ref} and step > #{step}
+	</update>
+	<insert id="boardReply" parameterType="QnaVO">
+		insert into qna
+		values(board_seq.nextval, #{title}, #{writer}, #{contents}, sysdate,
+		0, #{ref}, #{step}, #{depth})
+	</insert>
+	<select id="qnaSelect" resultType="QnaVO"
+		parameterType="BoardVO">
+		select * from qna where num = #{num}
+	</select>
+	<delete id="qnaDelete" parameterType="BoardVO">
+		delete qna where num =
+		#{num}
+	</delete>
+	<update id="qnaUpdate" parameterType="BoardVO">
+		update qna set title =
+		#{title},
+		writer=#{writer},contents=#{contents} where num = #{num}
+	</update>
+	<insert id="qnaWrite" parameterType="QnaVO">
+		insert into qna values
+		(board_seq.nextval,#{title},#{writer},#{contents},sysdate,0,0,0,0)
+	</insert>
+	<select id="qnaCount" resultType="Integer" parameterType="Pager">
 		select count(num) from qna
 		<choose>
 			<when test="kind == 'kindTitle'">
@@ -19,9 +44,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	<select id="qnaList"
-		resultType="com.iu.s4.model.BoardQnaVO"
-		parameterType="com.iu.s4.util.Pager">
+	<select id="qnaList" resultType="QnaVO" parameterType="Pager">
 		select * from (select N.*, rownum R from (select * from qna
 		<choose>
 			<when test="kind == 'kindSubject'">
@@ -34,7 +57,8 @@
 				where writer like '%'||#{search}||'%'
 			</otherwise>
 		</choose>
-		order by num desc ) N)
-		where R between #{startRow} and #{lastRow}
+		order by ref desc,step asc) N)
+		where R between #{startRow} and
+		#{lastRow}
 	</select>
 </mapper>

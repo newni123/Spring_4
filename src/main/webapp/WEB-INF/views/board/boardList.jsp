@@ -2,48 +2,46 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-
+<meta charset="utf-8">
 <c:import url="../layout/boot.jsp" />
 </head>
+<body>
 <c:import url="../layout/nav.jsp" />
-<h1 class="pad">
-	<a href="">${board}</a>
-</h1>
-<br />
-<div class="container">
-	<form action="boardList" id="frm">
+	<div class="container">
+		<h2>Striped Rows</h2>
+		<p>The .table-striped class adds zebra-stripes to a table:</p>
 		<div>
-			<input type="hidden" value="1" id="curPage" name="curPage"> <select
-				name="kind">
-				<option id="kindSubject" value="kindSubject">Subject</option>
-				<option id="kindContents" value="kindContents">Contents</option>
-				<option id="kindWrite" value="kindWrite">Write</option>
-			</select> <input type="text" name="search" value="${pager.search}">
-			<button>검색</button>
+			<form action="${board}List" id="frm">
+				<input type="hidden" id="curPage" value="1" name="curPage">
+				<select name="kind">
+					<option id="kindTitle" value="kindTitle">title</option>
+					<option id="kindContents" value="kindContents">contents</option>
+					<option id="kindWriter" value="kindWriter">writer</option>
+				</select> <input type="text" name="search" value="${pager.search}">
+				<button>검색</button>
+			</form>
 		</div>
-		<table class="table table-hover">
+		<table class="table table-striped">
 			<thead>
-				<tr class="head">
-					<th class=no style="text-align: center;">NO</th>
-					<th class=sub style="text-align: center;">SUBJECT</th>
-					<th class=name style="text-align: center;">WRITE</th>
-					<th class=date style="text-align: center;">DATE</th>
-					<th class=hit style="text-align: center;">HIT</th>
+				<tr>
+					<th>num</th>
+					<th>title</th>
+					<th>writer</th>
+					<th>date</th>
+					<th>hit</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${list}" var="vo">
 					<tr>
 						<td style="text-align: center;">${vo.num}</td>
-						<!--<c:catch>
-						<c:if test="${board ne 'notice'}">-->
-						<td style="text-align: center;"><a
-							href="./noticeSelect?num=${vo.num}">${vo.title}</a></td>
-						<!--</c:if></c:catch>-->
+						<td style="text-align: center;">
+						<c:catch>
+							<c:forEach begin="1" end="${vo.depth}">&nbsp&nbsp</c:forEach>
+						</c:catch>
+						<a href="${board}Select?num=${vo.num}">${vo.title}</a></td>
 						<td style="text-align: center;">${vo.writer}</td>
 						<td style="text-align: center;">${vo.reg_date}</td>
 						<td style="text-align: center;">${vo.hit}</td>
@@ -51,31 +49,33 @@
 				</c:forEach>
 			</tbody>
 		</table>
+	</div>
+	<div class="container">
+		<ul class="pagination">
+			<c:if test="${pager.curBlock > 1 }">
+				<li><span id="${pager.startNum - 1}" class="list">이전</span></li>
+			</c:if>
+			<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
+				<li><span id="${i}" class="list">${i}</span></li>
+			</c:forEach>
+			<c:if test="${pager.curBlock < pager.totalBlock}">
+				<li><span id="${pager.lastNum + 1}" class="list">다음</span></li>
+			</c:if>
+		</ul>
 		<div>
-			<ul class="pagination">
-				<c:if test="${pager.curBlock gt 1}">
-					<li><span id="${pager.startNum-1}" class="list">이전</span></li>
-				</c:if>
-				<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
-					<li><span id="${i}" class="list">${i}</span></li>
-				</c:forEach>
-				<c:if test="${pager.curBlock lt pager.totalBlock}">
-					<li><span id="${pager.lastNum+1}" class="list">다음</span></li>
-				</c:if>
-			</ul>
+			<a href="./qnaWrite"> Write</a>
 		</div>
-		<a href="boardWrite">Write</a>
 		<script type="text/javascript">
-			var kind = '${pager.kind}';
-			if (kind == '')
-				kind = "kindSubject";
+			var kind = '${pager.kind}'
+			if (kind == '') {
+				kind = "kindTitle"
+			}
 			$("#" + kind).prop("selected", true);
 			$(".list").click(function() {
 				$("#curPage").val($(this).attr("id"));
 				$("#frm").submit();
 			});
 		</script>
-	</form>
-</div>
+	</div>
 </body>
 </html>

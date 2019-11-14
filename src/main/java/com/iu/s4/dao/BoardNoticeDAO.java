@@ -18,30 +18,30 @@ public class BoardNoticeDAO implements BoardDAO{
 	@Override
 	public List<BoardVO> boardList(Pager pager) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(NAMESPACE+"boardList",pager);
+		return sqlSession.selectList(NAMESPACE+"noticeList",pager);
 	}
 	@Override
-	public BoardVO boardSelect(int num) throws Exception {
+	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne(NAMESPACE+"noticeSelect",boardVO);
 	}
 	@Override
 	public int boardWrite(BoardVO boardVO) throws Exception {
-		return sqlSession.insert(NAMESPACE+"boardWrite",boardVO);
+		return sqlSession.insert(NAMESPACE+"noticeWrite",boardVO);
 	}
 	@Override
-	public int boardUpdate() throws Exception {
+	public int boardUpdate(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(NAMESPACE+"noticeUpdate",boardVO);
 	}
 	@Override
-	public int boardDelete() throws Exception {
+	public int boardDelete(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete(NAMESPACE+"noticeDelete",boardVO);
 	}
 	@Override
 	public int boardCount(Pager pager) throws Exception {
-		return sqlSession.selectOne(NAMESPACE+"boardCount",pager);
+		return sqlSession.selectOne(NAMESPACE+"noticeCount",pager);
 	}
 
 

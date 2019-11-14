@@ -14,7 +14,7 @@
 					<li><a href="#">Page 1-2</a></li>
 					<li><a href="#">Page 1-3</a></li>
 				</ul></li>
-			<li><a href="<%= request.getContextPath()%>/board/boardList">Notice</a></li>
+			<li><a href="<%= request.getContextPath()%>/notice/noticeList">Notice</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 		
