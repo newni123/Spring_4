@@ -12,7 +12,7 @@ public interface BoardDAO {
 	// select
 	public BoardVO boardSelect(int num) throws Exception; 
 	// write
-	public int boradWrite(BoardVO boardVO) throws Exception; 
+	public int boardWrite(BoardVO boardVO) throws Exception; 
 	// update
 	public int boardUpdate() throws Exception;
 	// delete

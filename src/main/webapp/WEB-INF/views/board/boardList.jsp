@@ -11,14 +11,14 @@
 </head>
 <c:import url="../layout/nav.jsp" />
 <h1 class="pad">
-	<a href="">NOTICE</a>
+	<a href="">${board}</a>
 </h1>
 <br />
 <div class="container">
-	<form action="noticeList" id="frm">
+	<form action="boardList" id="frm">
 		<div>
-			<input type="hidden" value="1" id="curPage" name="curPage">
-			 <select name="kind">
+			<input type="hidden" value="1" id="curPage" name="curPage"> <select
+				name="kind">
 				<option id="kindSubject" value="kindSubject">Subject</option>
 				<option id="kindContents" value="kindContents">Contents</option>
 				<option id="kindWrite" value="kindWrite">Write</option>
@@ -36,14 +36,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${list}" var="noticeVO">
+				<c:forEach items="${list}" var="vo">
 					<tr>
-						<td style="text-align: center;">${noticeVO.num}</td>
+						<td style="text-align: center;">${vo.num}</td>
+						<!--<c:catch>
+						<c:if test="${board ne 'notice'}">-->
 						<td style="text-align: center;"><a
-							href="./noticeSelect?num=${noticeVO.num}">${noticeVO.title}</a></td>
-						<td style="text-align: center;">${noticeVO.writer}</td>
-						<td style="text-align: center;">${noticeVO.reg_date}</td>
-						<td style="text-align: center;">${noticeVO.hit}</td>
+							href="./noticeSelect?num=${vo.num}">${vo.title}</a></td>
+						<!--</c:if></c:catch>-->
+						<td style="text-align: center;">${vo.writer}</td>
+						<td style="text-align: center;">${vo.reg_date}</td>
+						<td style="text-align: center;">${vo.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -61,8 +64,7 @@
 				</c:if>
 			</ul>
 		</div>
-		<!-- session member, memberDTO -->
-		<a href="./noticeWrite">Write</a>
+		<a href="boardWrite">Write</a>
 		<script type="text/javascript">
 			var kind = '${pager.kind}';
 			if (kind == '')
@@ -72,7 +74,6 @@
 				$("#curPage").val($(this).attr("id"));
 				$("#frm").submit();
 			});
-			
 		</script>
 	</form>
 </div>

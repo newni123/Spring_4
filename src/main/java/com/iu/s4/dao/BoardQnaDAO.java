@@ -27,7 +27,7 @@ public class BoardQnaDAO implements BoardDAO{
 		return null;
 	}
 	@Override
-	public int boradWrite(BoardVO boardVO) throws Exception {
+	public int boardWrite(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}

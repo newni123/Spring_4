@@ -26,9 +26,8 @@ public class BoardNoticeDAO implements BoardDAO{
 		return null;
 	}
 	@Override
-	public int boradWrite(BoardVO boardVO) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int boardWrite(BoardVO boardVO) throws Exception {
+		return sqlSession.insert(NAMESPACE+"boardWrite",boardVO);
 	}
 	@Override
 	public int boardUpdate() throws Exception {
