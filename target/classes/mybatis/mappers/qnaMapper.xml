@@ -4,14 +4,33 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="qnaMapper">
-	<update id="boardReplyUpdate" parameterType="QnaVO">
-		update qna set
-		step=step+1 where ref=#{ref} and step > #{step}
+	<sql id="bs">
+		<![CDATA[
+		<choose>
+			<when test=" kind== ' kindSubject '>
+			where title like '%'||#{search}||'%'
+		</when>
+			<when test=" kind == ' kindContents '>
+				where contents like '%'||#{search}||'%'
+			</when>
+			<otherwise>
+				where writer like '%'||#{search}||'%'
+			</otherwise>
+		</choose>
+			]]>
+	</sql>
+	<update id="boardReplyUpdate" parameterType="BoardVO">
+		<![CDATA[
+			update qna set step = step + 1 where
+			ref = (selet ref from qna where num = #{num})
+			and 
+			step > (select stpe from qna where num = #{num})
+		]]>
 	</update>
-	<insert id="boardReply" parameterType="QnaVO">
+	<insert id="boardReply" parameterType="BoardVO">
 		insert into qna
 		values(board_seq.nextval, #{title}, #{writer}, #{contents}, sysdate,
-		0, #{ref}, #{step}, #{depth})
+		0,(select ref from qna where num =#{num}),(select step from qna where num = #{num})+1,(select depth from qna where num =#{num})+1)
 	</insert>
 	<select id="qnaSelect" resultType="QnaVO"
 		parameterType="BoardVO">
@@ -32,31 +51,12 @@
 	</insert>
 	<select id="qnaCount" resultType="Integer" parameterType="Pager">
 		select count(num) from qna
-		<choose>
-			<when test="kind == 'kindTitle'">
-				where title like '%'||#{search}||'%'
-			</when>
-			<when test="kind == 'kindContents'">
-				where contents like '%'||#{search}||'%'
-			</when>
-			<otherwise>
-				where writer like '%'||#{search}||'%'
-			</otherwise>
-		</choose>
+		<include refid="bs"></include>
 	</select>
 	<select id="qnaList" resultType="QnaVO" parameterType="Pager">
+
 		select * from (select N.*, rownum R from (select * from qna
-		<choose>
-			<when test="kind == 'kindSubject'">
-				where title like '%'||#{search}||'%'
-			</when>
-			<when test="kind == 'kindContents'">
-				where contents like '%'||#{search}||'%'
-			</when>
-			<otherwise>
-				where writer like '%'||#{search}||'%'
-			</otherwise>
-		</choose>
+		<include refid="bs"></include>
 		order by ref desc,step asc) N)
 		where R between #{startRow} and
 		#{lastRow}

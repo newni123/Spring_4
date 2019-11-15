@@ -18,13 +18,13 @@ public class BoardQnaService implements BoardService {
 
 	public int boardReply(BoardVO boardVO) throws Exception {
 		BoardQnaVO parent = (BoardQnaVO) boardQnaDAO.boardSelect(boardVO);
-		int result = boardQnaDAO.boardReplyUpdate(parent);
+		/*int result = boardQnaDAO.boardReplyUpdate(parent);
 		parent.setTitle(boardVO.getTitle());
 		parent.setWriter(boardVO.getWriter());
 		parent.setContents(boardVO.getContents());
 		parent.setStep(parent.getStep() + 1);
-		parent.setDepth(parent.getDepth() + 1);
-		return boardQnaDAO.boardReply(parent);
+		parent.setDepth(parent.getDepth() + 1);*/
+		return boardQnaDAO.boardReply(boardVO);
 
 	}
 
