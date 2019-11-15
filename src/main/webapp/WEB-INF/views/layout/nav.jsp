@@ -11,7 +11,7 @@
 				data-toggle="dropdown" href="${pageContext.request.contextPath}/">Point <span class="caret"></span></a>
 				<ul class="dropdown-menu">
 					<li><a href="${pageContext.request.contextPath}/qna/qnaList">QnA</a></li>
-					<li><a href="#">Page 1-2</a></li>
+					<li><a href="${pageContext.request.contextPath}/member/memberJoin">Join</a></li>
 					<li><a href="#">Page 1-3</a></li>
 				</ul></li>
 			<li><a href="<%= request.getContextPath()%>/notice/noticeList">Notice</a></li>
