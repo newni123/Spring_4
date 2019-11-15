@@ -45,7 +45,13 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public MemberVO memberCheckId(MemberVO memberVO) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE+"memberCheck",memberVO);
+		return sqlSession.selectOne(NAMESPACE+"memberCheckId",memberVO);
+	}
+
+	@Override
+	public MemberVO memberSelect(MemberVO memberVO) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(NAMESPACE+"memberSelect",memberVO);
 	}
 
 }

@@ -3,6 +3,9 @@ package com.iu.s4.service;
 import com.iu.s4.model.MemberVO;
 
 public interface MemberService {
+	
+	public MemberVO memberSelect(MemberVO memberVO) throws Exception;
+	
 	// Id Check
 	public MemberVO memberCheckId(MemberVO memberVO) throws Exception;
 	

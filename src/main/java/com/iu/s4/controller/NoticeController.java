@@ -19,7 +19,7 @@ import com.iu.s4.util.Pager;
 @Controller
 @RequestMapping("/notice/**")
 public class NoticeController {
-
+	
 	@Inject
 	private BoardNoticeService boardNoticeService;
 

@@ -17,7 +17,7 @@
 				<label for="id">아이디:</label> <input type="text" class="form-control"
 					id="id" name="id" required = "required">
 				<p id="input_id" class="btn_check"></p>
-				<input type="button" value="중복확인"> 
+				<input id="checkId" type="button" value="중복확인"> 
 			</div>
 			<div class="form-group">
 				<label for="pw">비밀번호:</label> <input type="password"
@@ -40,13 +40,10 @@
 				<p id="input_email" class="btn_check"></p>
 			</div>
 			<div class="form-group">
-				<label for="phone">연락처:</label> <input type="tel"
-					class="form-control" id="phone" name="phone" required = "required">
-				<p id="input_phone" class="btn_check"></p>
-			</div>
-			<div class="form-group">
 				<label for="birth">생일:</label> 
-				 <select name="year">
+				 <input type="date"
+					class="form-control" id="birth" name="birth" required = "required">
+				<%--  <select name="year">
 					<c:forEach begin="1920" end="2019" var="year">
 						<option>${year}</option>
 					</c:forEach>
@@ -63,7 +60,7 @@
 						<option>${date}</option>
 					</c:forEach>
 				</select>
-				<b>일</b> 
+				<b>일</b>  --%>
 			</div>
 			<div class="form-group">
 			<label for="gender">성별:</label> 
@@ -143,6 +140,10 @@
 				phone.style.border = "1px solid #ccc";
 			}
 		})
+		$("#checkId").click(function() {
+			var id = $("#id").val();
+			window.open("./memberCheckId?id="+id,"","width=400px,height=200px,left=400px,top=200px");
+		});// 콜백 함수
 	</script>
 </body>
 </html>

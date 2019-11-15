@@ -47,4 +47,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAOImpl.memberCheckId(memberVO);
 	}
 
+	@Override
+	public MemberVO memberSelect(MemberVO memberVO) throws Exception {
+		// TODO Auto-generated method stub
+		return memberDAOImpl.memberSelect(memberVO);
+	}
+
 }

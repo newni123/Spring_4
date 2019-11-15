@@ -4,6 +4,7 @@ import com.iu.s4.model.MemberVO;
 
 public interface MemberDAO {
 	
+	public MemberVO memberSelect(MemberVO memberVO) throws Exception;
 	// Id Check
 	public MemberVO memberCheckId(MemberVO memberVO) throws Exception;
 	// Join
