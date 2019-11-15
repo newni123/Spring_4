@@ -22,8 +22,7 @@
 	<update id="boardReplyUpdate" parameterType="BoardVO">
 		<![CDATA[
 			update qna set step = step + 1 where
-			ref = (selet ref from qna where num = #{num})
-			and 
+			ref = (selet ref from qna where num = #{num}) and 
 			step > (select stpe from qna where num = #{num})
 		]]>
 	</update>
@@ -32,7 +31,7 @@
 		values(board_seq.nextval, #{title}, #{writer}, #{contents}, sysdate,
 		0,(select ref from qna where num =#{num}),(select step from qna where num = #{num})+1,(select depth from qna where num =#{num})+1)
 	</insert>
-	<select id="qnaSelect" resultType="QnaVO"
+	<select id="qnaSelect" resultType="QnaVO" 
 		parameterType="BoardVO">
 		select * from qna where num = #{num}
 	</select>
