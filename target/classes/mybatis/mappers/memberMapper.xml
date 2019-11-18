@@ -13,7 +13,7 @@
 		values(#{id},#{pw},#{name},#{email},#{birth},#{gender})
 	</insert>
 	<select id="login" resultType="MemberVO" parameterType="MemberVO">
-		select * from member where id = #{id} and pw = #{pw}
+		select id,name,email,to_char(birth,'yyyy-mm-dd') as birth,gender from member where id = #{id} and pw = #{pw}
 	</select>
 	<select id="memberCheckId" parameterType="MemberVO" resultType="MemberVO">
 		select id from member where id = #{id}

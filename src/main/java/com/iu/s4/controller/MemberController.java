@@ -1,5 +1,7 @@
 package com.iu.s4.controller;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +21,7 @@ public class MemberController {
 	private MemberServiceImpl memberServiceImpl;
 	@RequestMapping(value="memberDelete")
 	public ModelAndView memberDelete(MemberVO memberVO,HttpSession session) throws Exception{
-		memberVO = (MemberVO) session.getAttribute("member");
+		memberVO = (MemberVO) session.getAttribute("member"); 
 		ModelAndView mv = new ModelAndView();
 		if (memberServiceImpl.memberDelete(memberVO) > 0) {
 			mv.setViewName("redirect:../");
@@ -49,8 +51,6 @@ public class MemberController {
 		memberVO = (MemberVO) session.getAttribute("member");
 		memberVO = memberServiceImpl.memberSelect(memberVO);
 		String birth = memberVO.getBirth();
-		birth = birth.substring(0,10);
-		memberVO.setBirth(birth);
 		mv.addObject("memberVO", memberVO);
 		return mv;
 	}

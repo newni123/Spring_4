@@ -53,7 +53,7 @@
 			<button type="submit" class="btn btn-default">수정</button>
 			<a href="memberDelete">탈퇴</a>
 		</form>
-		
+		${memberVO.birth}
 	</div>
 	<script type="text/javascript">
 		
