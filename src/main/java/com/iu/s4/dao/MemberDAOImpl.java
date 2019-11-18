@@ -12,6 +12,10 @@ public class MemberDAOImpl implements MemberDAO {
 	private SqlSession sqlSession;
 	private final static String NAMESPACE = "memberMapper.";
 	
+	public MemberVO emailCheck(MemberVO memberVO) throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"emailCheck",memberVO);
+	}
+	
 	@Override
 	public int memberJoin(MemberVO memberVO) throws Exception {
 		// TODO Auto-generated method stub

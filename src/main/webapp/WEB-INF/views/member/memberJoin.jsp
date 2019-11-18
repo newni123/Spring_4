@@ -7,6 +7,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="../layout/boot.jsp"%>
+<style type="text/css">
+.nonepass {
+	color: red;
+}
+
+.pass {
+	color: black;
+}
+</style>
 </head>
 <body>
 	<%@ include file="../layout/nav.jsp"%>
@@ -66,81 +75,116 @@
 					name="gender" checked="checked">남 <input type="radio"
 					value="F" name="gender">여
 			</div>
-			<button type="submit" class="btn btn-default">SignIn</button>
+			<!-- <button type="submit" class="btn btn-default">SignIn</button> -->
+			<input type="button" class="btn btn-default" value="Join" id="join">
 		</form>
 	</div>
 	<script type="text/javascript">
 		/* $("#id").blur(function() {
-			if ($("#id").val() == "") {
-				input_id.innerText = "아이디를 입력하세요.";
-				id.style.border = "1px solid red";
-			} else if ($("#id").val().length < 6) {
-				input_id.innerText = "6자리 이상 입력하세요.";
-				id.style.border = "1px solid red";
-			} else {
-				input_id.innerText = "";
-				id.style.border = "1px solid #ccc";
-			}
+			
 		}); */
-		$("#id").blur(function() {
-			var id = $("#id").val();
-			$.get("./member_Check_Test?id=" + id, function(data) {
-				$("#input_id").text(data);
-			});
 
+		var idCheck = false; // 아이디 중복검사했는지 체크용 false : 중복 / true : 중복되지않음
+		var pwEachCheck = false; // 비밀번호 일치검사
+		var emailCheck = false; // 이메일 중복검사 여부 
+		var nameCheck = false;	// 이름 null 여부 검사
+		$("#join").click(function() {
+			alert('사용가능아이디: ' + idCheck);
+			alert('비밀번호 일치여부: ' + pwEachCheck);
+			alert('이름 작성 여부: ' + nameCheck);
+			alert('사용가능이메일: ' + emailCheck);
+		});
+		$("#id").blur(function() {
+			var id = $(this).val();
+			$.post("./member_Check_Test", {id : id}, function(data) {
+				data = data.trim();
+				if ($("#id").val() == "") {
+					$("#input_id").text("아이디를 입력하세요.");
+				} else if ($("#id").val().length < 4) {
+					$("#input_id").text("4자리 이상 입력하세요.");
+				} else if (data == 'pass') {
+					$("#input_id").text('사용가능한 ID');
+					$("#input_id").attr("class", "pass");
+					idCheck = true;
+				} else {
+					$("#input_id").text('중복된 ID');
+					$("#input_id").attr("class", "nonepass");
+					$("#id").val("");
+					$("#id").focus();
+					idCheck = false;
+				}
+
+			});
 		});
 		$("#pw").blur(function() {
 			if ($("#pw").val() == "") {
-				input_pw.innerText = "비밀번호를 입력하세요.";
+				$("#input_pw").text("비밀번호를 입력하세요.");
 				pw.style.border = "1px solid red";
-			} else if ($("#pw").val().length < 8) {
-				input_pw.innerText = "8자리 이상 입력하세요.";
+			} else if ($("#pw").val().length < 4) {
+				$("#input_pw").text("4자리 이상 입력하세요.");
 				pw.style.border = "1px solid red";
 			} else {
-				input_pw.innerText = "";
+				$("#input_pw").text("");
 				pw.style.border = "1px solid #ccc";
 			}
 		});
 		$("#pw").change(function() {
 			pwCheck.style.border = "1px solid #ccc";
-			pwCheck.value = "";
-			input_pwCheck.innerText = "";
+			$("#pwCheck").val("");
+			$("#input_pw").text("");
 		});
 		$("#pwCheck").blur(
 				function() {
 					if ($("#pw").val() != $("#pwCheck").val()
-							|| $("#pw").val().length < 8) {
-						input_pwCheck.innerText = "비밀번호가 일치하지 않습니다";
+							|| $("#pw").val().length < 4) {
+						$("#input_pwCheck").text("비밀번호가 일치하지 않습니다");
 						pwCheck.style.border = "1px solid red";
+						pwEachCheck = false;
+
 					} else {
-						input_pwCheck.innerText = "";
+						$("#input_pwCheck").text("");
 						pwCheck.style.border = "1px solid #ccc";
+						pwEachCheck = true;
 					}
 				})
 		$("#name1").blur(function() {
 			if ($("#name1").val() == "") {
-				input_name1.innerText = "이름을 입력하세요.";
+				$("#input_name1").text("이름을 입력하세요.");
 				name1.style.border = "1px solid red";
+				nameCheck=false;
 			} else {
-				input_name1.innerText = "";
+				$("#input_name1").text("");
 				name1.style.border = "1px solid #ccc";
+				nameCheck=true;
 			}
 		})
+			
 		$("#email").blur(function() {
-			if ($("#email").val() == "") {
-				input_email.innerText = "이메일을 입력하세요.";
-				email.style.border = "1px solid red";
-			} else {
-				input_email.innerText = "";
-				email.style.border = "1px solid #ccc";
-			}
-		})
+			var email = $(this).val();
+			$.post("./emailCheck", {email : email}, function(data) {
+				data = data.trim();
+				if ($("#email").val() == "") {
+					$("#input_email").text("이메일을 입력하세요.");
+				} else if (data == 'pass') {
+					$("#input_email").text('사용가능한 email');
+					$("#input_email").attr("class", "pass");
+					emailCheck = true;
+				} else {
+					$("#input_email").text('중복된 email');
+					$("#input_email").attr("class", "nonepass");
+					$("#email").val("");
+					$("#email").focus();
+					emailCheck = false;
+				}
+
+			});
+		});
 		$("#phone").blur(function() {
 			if ($("#phone").val() == "") {
-				input_phone.innerText = "전화번호를 입력하세요.";
+				$("#input_phone").text("전화번호를 입력하세요.");
 				phone.style.border = "1px solid red";
 			} else {
-				input_phone.innerText = "";
+				$("#input_phone").text("");
 				phone.style.border = "1px solid #ccc";
 			}
 		})

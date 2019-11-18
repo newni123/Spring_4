@@ -19,9 +19,32 @@ import com.iu.s4.service.MemberServiceImpl;
 public class MemberController {
 	@Inject
 	private MemberServiceImpl memberServiceImpl;
-	@RequestMapping(value="memberDelete")
-	public ModelAndView memberDelete(MemberVO memberVO,HttpSession session) throws Exception{
-		memberVO = (MemberVO) session.getAttribute("member"); 
+
+	@RequestMapping(value="emailCheck",method = RequestMethod.POST)
+	public void emailCheck(MemberVO memberVO,Model model) throws Exception{
+		memberVO = memberServiceImpl.emailCheck(memberVO);
+		String result = "nonepass";
+		if(memberVO == null) {
+			result = "pass";
+		}
+		model.addAttribute("result",result);
+	}
+		
+	
+	@RequestMapping(value = "member_Check_Test", method = RequestMethod.POST)
+	public void memberCheckId2(MemberVO memberVO, Model model) throws Exception {
+		memberVO = memberServiceImpl.memberCheckId(memberVO);
+		String result = "nonepass";
+		if (memberVO == null) {
+			result = "pass";
+			
+		}
+		model.addAttribute("result", result);
+	}
+	
+	@RequestMapping(value = "memberDelete")
+	public ModelAndView memberDelete(MemberVO memberVO, HttpSession session) throws Exception {
+		memberVO = (MemberVO) session.getAttribute("member");
 		ModelAndView mv = new ModelAndView();
 		if (memberServiceImpl.memberDelete(memberVO) > 0) {
 			mv.setViewName("redirect:../");
@@ -33,8 +56,9 @@ public class MemberController {
 		}
 		return mv;
 	}
-	@RequestMapping(value = "memberMypage",method = RequestMethod.POST)
-	public ModelAndView memberUpdate(MemberVO memberVO) throws Exception{
+
+	@RequestMapping(value = "memberMypage", method = RequestMethod.POST)
+	public ModelAndView memberUpdate(MemberVO memberVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		if (memberServiceImpl.memberUpdate(memberVO) > 0) {
 			mv.setViewName("redirect:../");
@@ -45,8 +69,9 @@ public class MemberController {
 		}
 		return mv;
 	}
+
 	@RequestMapping(value = "memberMypage", method = RequestMethod.GET)
-	public ModelAndView memberUpdate(MemberVO memberVO,HttpSession session) throws Exception {
+	public ModelAndView memberUpdate(MemberVO memberVO, HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		memberVO = (MemberVO) session.getAttribute("member");
 		memberVO = memberServiceImpl.memberSelect(memberVO);
@@ -69,24 +94,12 @@ public class MemberController {
 		if (checkVO == null) {
 			result = "사용가능한 아이디";
 		}
-		System.out.println(memberVO);
 		model.addAttribute("memberVO", memberVO);
 		model.addAttribute("result", result);
 
 	}
 
-	@RequestMapping(value = "member_Check_Test", method = RequestMethod.GET)
-	public void memberCheckId2(MemberVO memberVO, Model model) throws Exception {
-		MemberVO checkVO = memberServiceImpl.memberCheckId(memberVO);
-		String result = "중복된 아이디";
-		if (checkVO == null) {
-			result = "사용가능한 아이디";
-		}
-		System.out.println(memberVO);
-		model.addAttribute("memberVO", memberVO);
-		model.addAttribute("result", result);
 
-	}
 
 	@RequestMapping(value = "memberLogin", method = RequestMethod.POST)
 	public ModelAndView memberLogin(MemberVO memberVO, HttpSession session) throws Exception {
