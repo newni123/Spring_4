@@ -75,6 +75,19 @@ public class MemberController {
 
 	}
 
+	@RequestMapping(value = "member_Check_Test", method = RequestMethod.GET)
+	public void memberCheckId2(MemberVO memberVO, Model model) throws Exception {
+		MemberVO checkVO = memberServiceImpl.memberCheckId(memberVO);
+		String result = "중복된 아이디";
+		if (checkVO == null) {
+			result = "사용가능한 아이디";
+		}
+		System.out.println(memberVO);
+		model.addAttribute("memberVO", memberVO);
+		model.addAttribute("result", result);
+
+	}
+
 	@RequestMapping(value = "memberLogin", method = RequestMethod.POST)
 	public ModelAndView memberLogin(MemberVO memberVO, HttpSession session) throws Exception {
 		memberVO = memberServiceImpl.memberLogin(memberVO);
