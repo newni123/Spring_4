@@ -3,12 +3,14 @@ package com.iu.s4.controller;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.s4.model.MemberVO;
@@ -45,6 +47,8 @@ public class MemberController {
 	@RequestMapping(value = "memberDelete")
 	public ModelAndView memberDelete(MemberVO memberVO, HttpSession session) throws Exception {
 		memberVO = (MemberVO) session.getAttribute("member");
+		
+		
 		ModelAndView mv = new ModelAndView();
 		if (memberServiceImpl.memberDelete(memberVO) > 0) {
 			mv.setViewName("redirect:../");
@@ -125,9 +129,12 @@ public class MemberController {
 	}
 
 	@RequestMapping(value = "memberJoin", method = RequestMethod.POST)
-	public ModelAndView memberJoin(MemberVO memberVO) throws Exception {
+	public ModelAndView memberJoin(MemberVO memberVO, HttpSession session, HttpServletRequest request)
+			throws Exception {
+		System.out.println(session.getServletContext().getRealPath("resources/upload"));
+		System.out.println(request.getSession().getServletContext().getRealPath(("resources/upload")));
 		ModelAndView mv = new ModelAndView();
-		int result = memberServiceImpl.memberJoin(memberVO);
+		int result = memberServiceImpl.memberJoin(memberVO, session);
 		if (result > 0)
 			mv.setViewName("redirect:../");
 		else {

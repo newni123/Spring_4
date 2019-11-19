@@ -1,5 +1,7 @@
 package com.iu.s4.service;
 
+import javax.servlet.http.HttpSession;
+
 import com.iu.s4.model.MemberVO;
 
 public interface MemberService {
@@ -10,8 +12,7 @@ public interface MemberService {
 	public MemberVO memberCheckId(MemberVO memberVO) throws Exception;
 	
 	// Join
-	public int memberJoin(MemberVO memberVO) throws Exception;
-
+	public int memberJoin(MemberVO memberVO,HttpSession session) throws Exception;
 	// Login
 	public MemberVO memberLogin(MemberVO memberVO) throws Exception;
 

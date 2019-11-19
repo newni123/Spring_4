@@ -21,7 +21,7 @@
 	<%@ include file="../layout/nav.jsp"%>
 	<div class="container">
 		<h2>SignIn</h2>
-		<form action="memberJoin" method="post" id="form">
+		<form action="memberJoin" method="post" id="form" enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="id">아이디:</label> <input type="text" class="form-control"
 					id="id" name="id" required="required">
@@ -75,24 +75,28 @@
 					name="gender" checked="checked">남 <input type="radio"
 					value="F" name="gender">여
 			</div>
+			<div class="form-group">
+				<label for="file">파일:</label> <input type="file"
+					class="form-control" id="file" name="file" required="required">
+				<p id="input_file" class="btn_check"></p>
+			</div>
 			<!-- <button type="submit" class="btn btn-default">SignIn</button> -->
 			<input type="button" class="btn btn-default" value="Join" id="join">
 		</form>
 	</div>
 	<script type="text/javascript">
-		/* $("#id").blur(function() {
-			
-		}); */
-
 		var idCheck = false; // 아이디 중복검사했는지 체크용 false : 중복 / true : 중복되지않음
 		var pwEachCheck = false; // 비밀번호 일치검사
 		var emailCheck = false; // 이메일 중복검사 여부 
 		var nameCheck = false;	// 이름 null 여부 검사
 		$("#join").click(function() {
-			alert('사용가능아이디: ' + idCheck);
+		/* 	alert('사용가능아이디: ' + idCheck);
 			alert('비밀번호 일치여부: ' + pwEachCheck);
 			alert('이름 작성 여부: ' + nameCheck);
-			alert('사용가능이메일: ' + emailCheck);
+			alert('사용가능이메일: ' + emailCheck); */
+			if (idCheck && pwEachCheck && emailCheck && nameCheck){
+				$("#form").submit();
+			}
 		});
 		$("#id").blur(function() {
 			var id = $(this).val();

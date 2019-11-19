@@ -50,6 +50,10 @@
 					name="gender" checked="checked" id="male">남 <input type="radio"
 					value="F" name="gender" id="female">여
 			</div>
+				<div class="form-group">
+				<label for="image">이미지:</label>
+				<img alt="" src="../resources/upload/member/${memberVO.fileName}" style="width: 150px; height: 150px;">
+			</div>
 			<button type="submit" class="btn btn-default">수정</button>
 			<a href="memberDelete">탈퇴</a>
 		</form>
