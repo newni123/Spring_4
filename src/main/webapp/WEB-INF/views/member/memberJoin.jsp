@@ -109,7 +109,7 @@
 				} else if (data == 'pass') {
 					$("#input_id").text('사용가능한 ID');
 					$("#input_id").attr("class", "pass");
-					idCheck = true;
+					idCheck = true;	
 				} else {
 					$("#input_id").text('중복된 ID');
 					$("#input_id").attr("class", "nonepass");

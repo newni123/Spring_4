@@ -16,8 +16,8 @@
 		<div class="container">
 			<h1>Notice input</h1>
 			<div class="form-group">
-				<label for="title">title:</label> <input type="text"
-					class="form-control" id="title" placeholder="Enter title"
+				<label for="title">titled:</label> <input type="text"
+					class="form-control del" id="title" placeholder="Enter title"
 					name="title">
 			</div>
 			<div class="form-group">
@@ -31,9 +31,13 @@
 					placeholder="Enter contents" name="contents"></textarea>
 			</div>
 			<div id="files" class="form-group">
-				<div class="form-group">
+				<div class="form-group ">
 					<label for="image">file:</label> <input type="file" name="file"
 						class="form-control" id="file">
+				</div>
+				<div>
+					<input type="button" name="del"
+						class="form-control btn btn-danger del" value="del">
 				</div>
 			</div>
 			<input type="button" class="btn btn-success" value="Add File"
@@ -49,8 +53,16 @@
 			if (count < 5) {
 				$("#files").append(files);
 				count++;
+				$("#files > div").addClass('num' + count);
 			} else
 				alert('첨부파일은 5개까지 추가 가능합니다');
+
+		});
+
+		$('#files').on("click", ".del", function() {
+			alert('test')
+			$(".num"+count-1).remove();
+			count--;
 		});
 	</script>
 </body>
