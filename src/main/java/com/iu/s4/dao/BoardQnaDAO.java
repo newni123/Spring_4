@@ -21,8 +21,8 @@ public class BoardQnaDAO implements BoardDAO{
 		return sqlSession.insert(NAMESPACE+"boardReply",boardVO);
 	}
 	
-	public int boardReplyUpdate(BoardQnaVO qnaVO) throws Exception{
-		return sqlSession.update(NAMESPACE+"boardReplyUpdate",qnaVO);
+	public int boardReplyUpdate(BoardVO boardVO) throws Exception{
+		return sqlSession.update(NAMESPACE+"boardReplyUpdate",boardVO);
 	}
 	@Override
 	public List<BoardVO> boardList(Pager pager) throws Exception {

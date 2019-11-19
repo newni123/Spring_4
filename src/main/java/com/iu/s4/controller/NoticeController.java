@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import com.iu.s4.util.Pager;
 @Controller
 @RequestMapping("/notice/**")
 public class NoticeController {
-
+	
 	@Inject
 	private BoardNoticeService boardNoticeService;
 
@@ -45,10 +46,12 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.POST)
-	public ModelAndView boardWrite2(BoardVO boardVO) throws Exception {
+	public ModelAndView boardWrite2(BoardVO boardVO,HttpSession session,HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
+		System.out.println(session.getServletContext().getRealPath("resources/upload/board"));
+		int result = boardNoticeService.boardWrite(boardVO,session);
 		String msg = "작성 실패";
-		if (boardNoticeService.boardWrite(boardVO) > 0) {
+		if (result > 0) {
 			mv.setViewName("redirect:./noticeList");
 		} else {
 			mv.addObject("msg", msg);

@@ -2,6 +2,8 @@ package com.iu.s4.model;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BoardVO {
 	private int num;
 	private String title;
@@ -9,6 +11,34 @@ public class BoardVO {
 	private String contents;
 	private Date reg_date;
 	private Integer hit;
+	private String FileName;
+	private String OriginalName;
+	private MultipartFile file;
+	
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public String getFileName() {
+		return FileName;
+	}
+
+	public void setFileName(String fileName) {
+		FileName = fileName;
+	}
+
+	public String getOriginalName() {
+		return OriginalName;
+	}
+
+	public void setOriginalName(String originalName) {
+		OriginalName = originalName;
+	}
 
 	public int getNum() {
 		return num;

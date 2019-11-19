@@ -3,11 +3,11 @@ package com.iu.s4.service;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
 import com.iu.s4.dao.BoardQnaDAO;
-import com.iu.s4.model.BoardQnaVO;
 import com.iu.s4.model.BoardVO;
 import com.iu.s4.util.Pager;
 
@@ -17,7 +17,7 @@ public class BoardQnaService implements BoardService {
 	private BoardQnaDAO boardQnaDAO;
 
 	public int boardReply(BoardVO boardVO) throws Exception {
-		BoardQnaVO parent = (BoardQnaVO) boardQnaDAO.boardSelect(boardVO);
+		int result = boardQnaDAO.boardReplyUpdate(boardVO);
 		/*int result = boardQnaDAO.boardReplyUpdate(parent);
 		parent.setTitle(boardVO.getTitle());
 		parent.setWriter(boardVO.getWriter());
@@ -42,7 +42,7 @@ public class BoardQnaService implements BoardService {
 	}
 
 	@Override
-	public int boardWrite(BoardVO boardVO) throws Exception {
+	public int boardWrite(BoardVO boardVO,HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
 		return boardQnaDAO.boardWrite(boardVO);
 	}

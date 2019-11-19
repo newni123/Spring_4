@@ -11,7 +11,8 @@
 	<c:import url="../layout/nav.jsp" />
 	<c:import url="../layout/boot.jsp" />
 	<h1>Write</h1>
-	<form action="${board}Write" method="post">
+	<form action="${board}Write" method="post"
+		enctype="multipart/form-data">
 		<div class="container">
 			<h1>Notice input</h1>
 			<div class="form-group">
@@ -29,8 +30,28 @@
 				<textarea style="height: 300px" class="form-control" id="contents"
 					placeholder="Enter contents" name="contents"></textarea>
 			</div>
+			<div id="files" class="form-group">
+				<div class="form-group">
+					<label for="image">file:</label> <input type="file" name="file"
+						class="form-control" id="file">
+				</div>
+			</div>
+			<input type="button" class="btn btn-success" value="Add File"
+				id="btn">
 			<button type="submit" class="btn btn-default">Submit</button>
 		</div>
 	</form>
+	<script type="text/javascript">
+		var files = $("#files").html(); // 이벤트 태그 안에 넣으면 처음클릭시 1개.. 두번째 클릭시 2개.. 세번째 클릭시 4개.. 이런식으로 늘어남
+		var count = 0;
+		$("#files").empty();
+		$("#btn").click(function() {
+			if (count < 5) {
+				$("#files").append(files);
+				count++;
+			} else
+				alert('첨부파일은 5개까지 추가 가능합니다');
+		});
+	</script>
 </body>
 </html>

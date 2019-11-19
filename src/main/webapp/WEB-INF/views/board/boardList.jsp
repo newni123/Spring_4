@@ -63,7 +63,7 @@
 			</c:if>
 		</ul>
 		<div>
-			<a href="./qnaWrite"> Write</a>
+			<a href="./${board}Write"> Write</a>
 		</div>
 		<script type="text/javascript">
 			var kind = '${pager.kind}'
