@@ -32,7 +32,7 @@ public class BoardNoticeService implements BoardService {
 
 	@Override
 	public int boardWrite(BoardVO boardVO, HttpSession session) throws Exception {
-		String realPath = session.getServletContext().getRealPath("resource/upload/board");
+		String realPath = session.getServletContext().getRealPath("resources/upload/board");
 		System.out.println(realPath);
 		File file = new File(realPath);
 		if(!file.exists()) {
