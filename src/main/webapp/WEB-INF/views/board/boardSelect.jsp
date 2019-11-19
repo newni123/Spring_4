@@ -36,7 +36,9 @@
 			<tr>
 				<td colspan="5">
 					<a href="${board}Update?num=${vo.num}"style="float: right; margin-right: 20px;">Update</a>
-					<a href="${board}Reply?num=${vo.num}" style="float: right; margin-right: 20px;">Reply</a>
+					<c:if test="${board eq 'qna'}">
+						<a href="${board}Reply?num=${vo.num}" style="float: right; margin-right: 20px;">Reply</a>
+					</c:if>
 					<a href="${board}Delete?num=${vo.num}" id="del" style="float: left; margin-left: 20px;">Delete</a>
 				</td>
 			</tr>

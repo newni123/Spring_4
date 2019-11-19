@@ -11,7 +11,8 @@
 	<c:import url="../layout/nav.jsp" />
 	<c:import url="../layout/boot.jsp" />
 	<h1>Write</h1>
-	<form action="${board}Write" method="post">
+	<form action="${board}Write" method="post"
+		enctype="multipart/form-data">
 		<div class="container">
 			<h1>Notice input</h1>
 			<div class="form-group">
@@ -29,6 +30,11 @@
 				<textarea style="height: 300px" class="form-control" id="contents"
 					placeholder="Enter contents" name="contents"></textarea>
 			</div>
+			<div class="form-group">
+				<label for="image">image:</label> <input type="file" name="file"
+					id="file">
+			</div>
+
 			<button type="submit" class="btn btn-default">Submit</button>
 		</div>
 	</form>
