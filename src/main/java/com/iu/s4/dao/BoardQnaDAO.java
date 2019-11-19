@@ -17,8 +17,8 @@ public class BoardQnaDAO implements BoardDAO{
 	private SqlSession sqlSession;
 	private static final String NAMESPACE = "qnaMapper.";
 	
-	public int boardReply(BoardQnaVO qnaVO) throws Exception{
-		return sqlSession.insert(NAMESPACE+"boardReply",qnaVO);
+	public int boardReply(BoardVO boardVO) throws Exception{
+		return sqlSession.insert(NAMESPACE+"boardReply",boardVO);
 	}
 	
 	public int boardReplyUpdate(BoardQnaVO qnaVO) throws Exception{
