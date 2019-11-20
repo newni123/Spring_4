@@ -11,26 +11,7 @@ public class BoardVO {
 	private String contents;
 	private Date reg_date;
 	private Integer hit;
-	private String FileName;
-	private String OriginalName;
-	
 
-
-	public String getFileName() {
-		return FileName;
-	}
-
-	public void setFileName(String fileName) {
-		FileName = fileName;
-	}
-
-	public String getOriginalName() {
-		return OriginalName;
-	}
-
-	public void setOriginalName(String originalName) {
-		OriginalName = originalName;
-	}
 
 	public int getNum() {
 		return num;

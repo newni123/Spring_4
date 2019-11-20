@@ -36,15 +36,15 @@
 			<tbody>
 				<c:forEach items="${list}" var="vo">
 					<tr>
-						<td style="text-align: center;">${vo.num}</td>
-						<td style="text-align: center;">
+						<td >${vo.num}</td>
+						<td >
 						<c:catch>
-							<c:forEach begin="1" end="${vo.depth}">&nbsp&nbsp</c:forEach>
+							<c:forEach begin="1" end="${vo.depth}">└</c:forEach>
 						</c:catch>
 						<a href="${board}Select?num=${vo.num}">${vo.title}</a></td>
-						<td style="text-align: center;">${vo.writer}</td>
-						<td style="text-align: center;">${vo.reg_date}</td>
-						<td style="text-align: center;">${vo.hit}</td>
+						<td >${vo.writer}</td>
+						<td >${vo.reg_date}</td>
+						<td >${vo.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

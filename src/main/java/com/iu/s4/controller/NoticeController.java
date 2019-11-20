@@ -52,7 +52,7 @@ public class NoticeController {
 		for(int i = 0; i < file.length;i++)
 			file[i].getOriginalFilename();
 		ModelAndView mv = new ModelAndView();
-		System.out.println(session.getServletContext().getRealPath("resources/upload/board"));
+		System.out.println(session.getServletContext().getRealPath("resources/upload/notice"));
 		int result = boardNoticeService.boardWrite(boardVO, file, session);
 		String msg = "작성 실패";
 		if (result > 0) {

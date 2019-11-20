@@ -32,6 +32,16 @@
 				<textarea class="form-control" id="contents"  style="height: 300px"
 					placeholder="Enter contents" name="contents">${vo.contents}</textarea>
 			</div>
+			<div id="files" class="form-group">
+				<div class="form-group">
+					<label for="image">file:</label> <input type="file" name="file"
+						class="form-control" id="file">
+					<div>
+						<input type="button" name="del"
+							class="form-control btn btn-danger del" value="del">
+					</div>
+				</div>
+			</div>
 			<button type="submit" class="btn btn-default">Submit</button>
 		</form>
 	</div>

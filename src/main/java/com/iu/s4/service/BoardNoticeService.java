@@ -1,6 +1,5 @@
 package com.iu.s4.service;
 
-import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.s4.dao.BoardNoticeDAO;
 import com.iu.s4.dao.NoticeFilesDAO;
+import com.iu.s4.model.BoardNoticeVO;
 import com.iu.s4.model.BoardVO;
 import com.iu.s4.model.NoticeFilesVO;
 import com.iu.s4.util.FileSaver;
@@ -35,15 +35,19 @@ public class BoardNoticeService implements BoardService {
 	@Override
 	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		return boardNoticeDAO.boardSelect(boardVO);
+		boardVO = boardNoticeDAO.boardSelect(boardVO);
+		BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
+		List<NoticeFilesVO> noticeFilesVOs = noticeFilesDAO.fileList(boardVO.getNum());
+		boardNoticeVO.setFiles(noticeFilesVOs);
+		return boardNoticeVO;
 	}
 
 	@Override
 	public int boardWrite(BoardVO boardVO,MultipartFile[] file, HttpSession session) throws Exception {
-		String realPath = session.getServletContext().getRealPath("resources/upload/board");
+		String realPath = session.getServletContext().getRealPath("resources/upload/notice");
 		NoticeFilesVO noticeFilesVO = new NoticeFilesVO(); 
 		int result = boardNoticeDAO.boardWrite(boardVO);
-		System.out.println(boardVO.getNum());
+		noticeFilesVO.setNum(boardVO.getNum());
 		for(MultipartFile multipartFile: file) {
 			String fileName = fileSaver.save2(realPath,multipartFile);
 			noticeFilesVO.setFname(fileName);

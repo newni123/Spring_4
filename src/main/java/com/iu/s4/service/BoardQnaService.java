@@ -9,13 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.s4.dao.BoardQnaDAO;
+import com.iu.s4.dao.QnaFilesDAO;
+import com.iu.s4.model.BoardQnaVO;
 import com.iu.s4.model.BoardVO;
+import com.iu.s4.model.QnaFilesVO;
+import com.iu.s4.util.FileSaver;
 import com.iu.s4.util.Pager;
 
 @Service
 public class BoardQnaService implements BoardService {
 	@Inject
 	private BoardQnaDAO boardQnaDAO;
+	@Inject
+	private FileSaver fileSaver;
+	@Inject
+	private QnaFilesDAO qnaFilesDAO;
 
 	public int boardReply(BoardVO boardVO) throws Exception {
 		int result = boardQnaDAO.boardReplyUpdate(boardVO);
@@ -39,13 +47,27 @@ public class BoardQnaService implements BoardService {
 	@Override
 	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		return boardQnaDAO.boardSelect(boardVO);
+		boardVO = boardQnaDAO.boardSelect(boardVO);
+		BoardQnaVO boardQnaVO = (BoardQnaVO)boardVO;
+		List<QnaFilesVO> qnaFilesVOs = qnaFilesDAO.fileList(boardVO.getNum());
+		boardQnaVO.setFiles(qnaFilesVOs);
+		return boardQnaVO;
 	}
 
 	@Override
 	public int boardWrite(BoardVO boardVO,MultipartFile[] file,HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
-		return boardQnaDAO.boardWrite(boardVO);
+		String realPath = session.getServletContext().getRealPath("resources/upload/qna");
+		QnaFilesVO qnaFilesVO = new QnaFilesVO();
+		int result = boardQnaDAO.boardWrite(boardVO); // 작성될 글의 num을 받아와 files테이블에 넣기 위함
+		qnaFilesVO.setNum(boardVO.getNum());
+		for(MultipartFile multipartFile: file) {
+			String fileName = fileSaver.save(realPath, multipartFile);
+			qnaFilesVO.setFname(fileName);
+			qnaFilesVO.setOname(multipartFile.getOriginalFilename());
+			qnaFilesDAO.fileWrite(qnaFilesVO);
+		}
+		return result;
 	}
 
 	@Override

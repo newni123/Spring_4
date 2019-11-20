@@ -15,8 +15,11 @@
 		writer=#{writer},contents=#{contents} where num = #{num}
 	</update>
 	<insert id="noticeWrite" parameterType="noticeVO">
+		<selectKey order="BEFORE" keyProperty="num" resultType="Integer">
+			select board_seq.nextval from dual
+		</selectKey>
 		insert into notice values
-		(board_seq.nextval,#{title},#{writer},#{contents},sysdate,0)
+		(#{num},#{title},#{writer},#{contents},sysdate,0)
 	</insert>
 	<select id="noticeCount" resultType="Integer"
 		parameterType="Pager">

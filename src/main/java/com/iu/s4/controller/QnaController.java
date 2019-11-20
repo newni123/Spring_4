@@ -3,10 +3,13 @@ package com.iu.s4.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.s4.model.BoardVO;
@@ -41,47 +44,48 @@ public class QnaController {
 		return mv;
 	}
 
-	@RequestMapping(value="qnaReply", method=RequestMethod.POST)
-	public ModelAndView qnaReply(BoardVO boardVO) throws Exception{
+	@RequestMapping(value = "qnaReply", method = RequestMethod.POST)
+	public ModelAndView qnaReply(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		String msg = "작성 실패";
-		if (boardQnaService.boardReply(boardVO) > 0){
+		if (boardQnaService.boardReply(boardVO) > 0) {
 			mv.setViewName("redirect:./qnaList");
-		}
-		else {
-			mv.addObject("msg",msg);
-			mv.addObject("path","./qnaList");
+		} else {
+			mv.addObject("msg", msg);
+			mv.addObject("path", "./qnaList");
 			mv.setViewName("common/common_result");
 		}
-		mv.addObject("board","qna");
+		mv.addObject("board", "qna");
 		return mv;
-		
+
 	}
-	
-	@RequestMapping(value="qnaReply" ,method = RequestMethod.GET)
-	public ModelAndView qnaReply(int num) throws Exception{
+
+	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
+	public ModelAndView qnaReply(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("num",num);
+		mv.addObject("vo", boardVO);
 		mv.addObject("board", "qna");
 		mv.setViewName("board/boardReply");
 		return mv;
-		
+
 	}
-	
+
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.POST)
-	public ModelAndView qnaWrite2(BoardVO boardVO) throws Exception {
-		int result = boardQnaService.boardReply(boardVO);
+	public ModelAndView qnaWrite2(BoardVO boardVO, MultipartFile[] file,HttpSession session,HttpServletRequest request) throws Exception {
+		for(int i = 0; i < file.length;i++)
+			file[i].getOriginalFilename();
 		ModelAndView mv = new ModelAndView();
+		int result = boardQnaService.boardWrite(boardVO, file, session);
+		System.out.println(session.getServletContext().getRealPath("resources/upload/qna"));
 		String msg = "작성 실패";
-		if (result > 0){
+		if (result > 0) {
 			mv.setViewName("redirect:./qnaList");
-		}
-		else {
-			mv.addObject("msg",msg);
-			mv.addObject("path","./qnaList");
+		} else {
+			mv.addObject("msg", msg);
+			mv.addObject("path", "./qnaList");
 			mv.setViewName("common/common_result");
 		}
-		mv.addObject("board","qna");
+		mv.addObject("board", "qna");
 		return mv;
 	}
 

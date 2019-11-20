@@ -30,9 +30,15 @@
 				<td>${vo.reg_date}</td>
 				<td>${vo.hit}</td>
 			</tr>
+			
 			<tr>
 				<td colspan="4" class="contents">${vo.contents}</td>
 			</tr>
+			<c:forEach items="${vo.files}" var="file">
+				<tr>
+					<td colspan="5"><a href="../resources/upload/${board}/${file.fname}">${file.oname}</a></td>
+				</tr>
+			</c:forEach>
 			<tr>
 				<td colspan="5">
 					<a href="${board}Update?num=${vo.num}"style="float: right; margin-right: 20px;">Update</a>
