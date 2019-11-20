@@ -13,7 +13,7 @@
 	<h1>Write</h1>
 	<form action="${board}Reply" method="post">
 		<div class="container">
-			<input type="hidden" name="num" value="${num}">
+			<input type="hidden" name="num" value="${vo.num}">
 			<h1>Notice input</h1>
 			<div class="form-group">
 				<label for="title">title:</label> <input type="text"

@@ -14,7 +14,6 @@
 	<form action="${board}Write" method="post"
 		enctype="multipart/form-data">
 		<div class="container">
-			<h1>Notice input</h1>
 			<div class="form-group">
 				<label for="title">titled:</label> <input type="text"
 					class="form-control del" id="title" placeholder="Enter title"

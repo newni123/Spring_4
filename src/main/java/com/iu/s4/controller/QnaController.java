@@ -61,7 +61,7 @@ public class QnaController {
 	}
 
 	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
-	public ModelAndView qnaReply(BoardVO boardVO) throws Exception {
+	public ModelAndView qnaReply2(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("vo", boardVO);
 		mv.addObject("board", "qna");

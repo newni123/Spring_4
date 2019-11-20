@@ -35,11 +35,11 @@ public class BoardNoticeService implements BoardService {
 	@Override
 	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		boardVO = boardNoticeDAO.boardSelect(boardVO);
-		BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
-		List<NoticeFilesVO> noticeFilesVOs = noticeFilesDAO.fileList(boardVO.getNum());
-		boardNoticeVO.setFiles(noticeFilesVOs);
-		return boardNoticeVO;
+		//boardVO = boardNoticeDAO.boardSelect(boardVO);
+		//BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
+		//List<NoticeFilesVO> noticeFilesVOs = noticeFilesDAO.fileList(boardVO.getNum());
+		//boardNoticeVO.setFiles(noticeFilesVOs);
+		return boardNoticeDAO.boardSelect(boardVO);
 	}
 
 	@Override

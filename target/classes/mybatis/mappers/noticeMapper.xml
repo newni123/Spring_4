@@ -4,18 +4,40 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="noticeMapper">
-	<select id="noticeSelect" resultType="noticeVO" parameterType="BoardVO">
-		select * from notice where num = #{num}
+	<select id="noticeSelect" resultMap="noticeFile"
+		parameterType="BoardVO">
+		select N.*, F.FNUM,F.FNAME,F.ONAME
+		FROM NOTICE N FULL
+		OUTER JOIN NOTICEFILES F
+		ON N.NUM = F.NUM
+		WHERE N.NUM = #{num}
 	</select>
+	<resultMap type="NoticeVO" id="noticeFile">
+		<id property="num" column="num" /> <!-- pk는 id로 -->
+		<result property="title" column="title" />
+		<result property="writer" column="writer" />
+		<result property="contents" column="contents" />
+		<result property="reg_date" column="reg_date" />
+		<result property="hit" column="hit" />
+		<collection property="files" javaType="java.util.List"
+			ofType="NoticeFilesVO">
+			<id property="fnum" column="fnum" />
+			<result property="fname" column="fname" />
+			<result property="oname" column="oname" />
+		</collection>
+	</resultMap>
 	<delete id="noticeDelete" parameterType="noticeVO">
-		delete notice where num = #{num}	
+		delete notice where num
+		= #{num}
 	</delete>
 	<update id="noticeUpdate" parameterType="BoardVO">
-		update notice set title = #{title},
+		update notice set title
+		= #{title},
 		writer=#{writer},contents=#{contents} where num = #{num}
 	</update>
 	<insert id="noticeWrite" parameterType="noticeVO">
-		<selectKey order="BEFORE" keyProperty="num" resultType="Integer">
+		<selectKey order="BEFORE" keyProperty="num"
+			resultType="Integer">
 			select board_seq.nextval from dual
 		</selectKey>
 		insert into notice values
