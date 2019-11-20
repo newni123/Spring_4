@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.s4.model.BoardVO;
@@ -20,7 +21,7 @@ import com.iu.s4.util.Pager;
 @Controller
 @RequestMapping("/notice/**")
 public class NoticeController {
-	
+
 	@Inject
 	private BoardNoticeService boardNoticeService;
 
@@ -46,10 +47,13 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.POST)
-	public ModelAndView boardWrite2(BoardVO boardVO,HttpSession session,HttpServletRequest request) throws Exception {
+	public ModelAndView boardWrite2(BoardVO boardVO, MultipartFile[] file, HttpSession session,
+			HttpServletRequest request) throws Exception {
+		for(int i = 0; i < file.length;i++)
+			file[i].getOriginalFilename();
 		ModelAndView mv = new ModelAndView();
 		System.out.println(session.getServletContext().getRealPath("resources/upload/board"));
-		int result = boardNoticeService.boardWrite(boardVO,session);
+		int result = boardNoticeService.boardWrite(boardVO, file, session);
 		String msg = "작성 실패";
 		if (result > 0) {
 			mv.setViewName("redirect:./noticeList");

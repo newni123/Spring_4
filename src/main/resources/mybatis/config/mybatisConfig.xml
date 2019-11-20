@@ -9,6 +9,7 @@
   		<typeAlias type="com.iu.s4.model.BoardNoticeVO" alias="NoticeVO"/>
   		<typeAlias type="com.iu.s4.model.BoardQnaVO" alias="QnaVO"/>
   		<typeAlias type="com.iu.s4.model.MemberVO" alias="MemberVO"/>
+  		<typeAlias type="com.iu.s4.model.NoticeFilesVO" alias="NoticeFilesVO"/>
   		<typeAlias type="com.iu.s4.util.Pager" alias="Pager"/>
   		<typeAlias type="java.lang.String" alias="String"/>
   		<typeAlias type="java.lang.Integer" alias="Integer"/>
