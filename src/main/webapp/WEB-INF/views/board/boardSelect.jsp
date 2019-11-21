@@ -36,7 +36,7 @@
 			</tr>
 			<c:forEach items="${vo.files}" var="file">
 				<tr>
-					<td colspan="5"><a href="../resources/upload/${board}/${file.fname}">${file.oname}</a></td>
+					<td colspan="5"><a href="./fileDown?fnum=${file.fnum}">${file.oname}</a></td>
 				</tr>
 			</c:forEach>
 			<tr>

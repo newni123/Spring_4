@@ -24,38 +24,46 @@ public class BoardNoticeService implements BoardService {
 	@Inject
 	private NoticeFilesDAO noticeFilesDAO;
 	// @Inject private HttpSession session;
+
+	public NoticeFilesVO fileSelect(NoticeFilesVO noticeFilesVO) throws Exception {
+		return noticeFilesDAO.filesSelect(noticeFilesVO);
+	}
+
 	@Override
 	public List<BoardVO> boardList(Pager pager) throws Exception {
 		pager.makeRow();
 		pager.makePage(boardNoticeDAO.boardCount(pager));
 		return boardNoticeDAO.boardList(pager);
 	}
-	
+
 	public int fileDelete(NoticeFilesVO noticeFilesVO) throws Exception {
 		return noticeFilesDAO.fileDelete(noticeFilesVO);
 	}
-	
+
 	@Override
 	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		//boardVO = boardNoticeDAO.boardSelect(boardVO);
-		//BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
-		//List<NoticeFilesVO> noticeFilesVOs = noticeFilesDAO.fileList(boardVO.getNum());
-		//boardNoticeVO.setFiles(noticeFilesVOs);
+		// boardVO = boardNoticeDAO.boardSelect(boardVO);
+		// BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
+		// List<NoticeFilesVO> noticeFilesVOs =
+		// noticeFilesDAO.fileList(boardVO.getNum());
+		// boardNoticeVO.setFiles(noticeFilesVOs);
 		return boardNoticeDAO.boardSelect(boardVO);
 	}
 
 	@Override
-	public int boardWrite(BoardVO boardVO,MultipartFile[] file, HttpSession session) throws Exception {
+	public int boardWrite(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		String realPath = session.getServletContext().getRealPath("resources/upload/notice");
-		NoticeFilesVO noticeFilesVO = new NoticeFilesVO(); 
+		NoticeFilesVO noticeFilesVO = new NoticeFilesVO();
 		int result = boardNoticeDAO.boardWrite(boardVO);
 		noticeFilesVO.setNum(boardVO.getNum());
-		for(MultipartFile multipartFile: file) {
-			String fileName = fileSaver.save2(realPath,multipartFile);
-			noticeFilesVO.setFname(fileName);
-			noticeFilesVO.setOname(multipartFile.getOriginalFilename());
-			noticeFilesDAO.fileWrite(noticeFilesVO);
+		for (MultipartFile multipartFile : file) {
+			if (multipartFile.getOriginalFilename() != "") { // Add File 누르고 실제로 파일을 올렸을때만 
+				String fileName = fileSaver.save2(realPath, multipartFile);
+				noticeFilesVO.setFname(fileName);
+				noticeFilesVO.setOname(multipartFile.getOriginalFilename());
+				noticeFilesDAO.fileWrite(noticeFilesVO);
+			}
 		}
 		return result;
 	}
@@ -65,13 +73,15 @@ public class BoardNoticeService implements BoardService {
 		// TODO Auto-generated method stub
 		String realPath = session.getServletContext().getRealPath("resources/upload/notice");
 		NoticeFilesVO noticeFilesVO = new NoticeFilesVO();
-		int result = boardNoticeDAO.boardUpdate(boardVO); 
+		int result = boardNoticeDAO.boardUpdate(boardVO);
 		noticeFilesVO.setNum(boardVO.getNum());
-		for(MultipartFile multipartFile: file) {
-			String fileName = fileSaver.save3(realPath,multipartFile);
-			noticeFilesVO.setFname(fileName);
-			noticeFilesVO.setOname(multipartFile.getOriginalFilename());
-			noticeFilesDAO.fileWrite(noticeFilesVO); // update해도 어차피 테이블에 새로 추가하는거니까 그냥 fileWrite씀 
+		for (MultipartFile multipartFile : file) {
+			if (multipartFile.getOriginalFilename() != "") {
+				String fileName = fileSaver.save3(realPath, multipartFile);
+				noticeFilesVO.setFname(fileName);
+				noticeFilesVO.setOname(multipartFile.getOriginalFilename());
+				noticeFilesDAO.fileWrite(noticeFilesVO); // update해도 어차피 테이블에 새로 추가하는거니까 그냥 fileWrite씀
+			}
 		}
 		return result;
 	}

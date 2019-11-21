@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,16 @@ public class NoticeController {
 
 	@Inject
 	private BoardNoticeService boardNoticeService;
-
+	
+	@GetMapping(value = "fileDown")
+	public ModelAndView fileDown(NoticeFilesVO noticeFilesVO) throws Exception {
+		noticeFilesVO = boardNoticeService.fileSelect(noticeFilesVO);
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("file",noticeFilesVO);
+		mv.setViewName("fileDown");
+		mv.addObject("board","notice");
+		return mv;
+	}
 	@PostMapping(value = "fileDelete")
 	public ModelAndView fileDelete(NoticeFilesVO noticeFilesVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
@@ -39,6 +49,7 @@ public class NoticeController {
 	public ModelAndView boardSelect(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		boardVO = boardNoticeService.boardSelect(boardVO);
+		boardVO.setContents(boardVO.getContents().replace("\r\n", "<br>")); // 엔터 인식 시키기
 		mv.addObject("vo", boardVO);
 		mv.addObject("board", "notice");
 		mv.setViewName("board/boardSelect");
