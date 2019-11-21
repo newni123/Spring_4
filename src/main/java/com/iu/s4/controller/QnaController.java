@@ -63,7 +63,7 @@ public class QnaController {
 	@RequestMapping(value = "qnaReply", method = RequestMethod.GET)
 	public ModelAndView qnaReply2(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("vo", boardVO);
+		mv.addObject(" -", boardVO);
 		mv.addObject("board", "qna");
 		mv.setViewName("board/boardReply");
 		return mv;
@@ -71,9 +71,8 @@ public class QnaController {
 	}
 
 	@RequestMapping(value = "qnaWrite", method = RequestMethod.POST)
-	public ModelAndView qnaWrite2(BoardVO boardVO, MultipartFile[] file,HttpSession session,HttpServletRequest request) throws Exception {
-		for(int i = 0; i < file.length;i++)
-			file[i].getOriginalFilename();
+	public ModelAndView qnaWrite2(BoardVO boardVO, MultipartFile[] file, HttpSession session,
+			HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		int result = boardQnaService.boardWrite(boardVO, file, session);
 		System.out.println(session.getServletContext().getRealPath("resources/upload/qna"));
@@ -112,9 +111,10 @@ public class QnaController {
 	}
 
 	@RequestMapping(value = "qnaUpdate", method = RequestMethod.POST)
-	public ModelAndView boardUpdate2(BoardVO boardVO) throws Exception {
+	public ModelAndView boardUpdate2(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		if (boardQnaService.boardUpdate(boardVO) > 0) {
+		int result = boardQnaService.boardUpdate(boardVO, file, session);
+		if (result > 0) {
 			mv.setViewName("redirect:./qnaList");
 		} else {
 			mv.addObject("msg", "수정 실패");

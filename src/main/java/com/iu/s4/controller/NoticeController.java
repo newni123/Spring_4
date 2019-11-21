@@ -3,18 +3,18 @@ package com.iu.s4.controller;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.iu.s4.model.BoardNoticeVO;
 import com.iu.s4.model.BoardVO;
+import com.iu.s4.model.NoticeFilesVO;
 import com.iu.s4.service.BoardNoticeService;
 import com.iu.s4.util.Pager;
 
@@ -24,6 +24,16 @@ public class NoticeController {
 
 	@Inject
 	private BoardNoticeService boardNoticeService;
+
+	@PostMapping(value = "fileDelete")
+	public ModelAndView fileDelete(NoticeFilesVO noticeFilesVO) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		System.out.println(noticeFilesVO.getFname());
+		int result = boardNoticeService.fileDelete(noticeFilesVO);
+		mv.setViewName("common/common_ajaxResult");
+		mv.addObject("result", result);
+		return mv;
+	}
 
 	@RequestMapping(value = "noticeSelect")
 	public ModelAndView boardSelect(BoardVO boardVO) throws Exception {
@@ -47,12 +57,14 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "noticeWrite", method = RequestMethod.POST)
-	public ModelAndView boardWrite2(BoardVO boardVO, MultipartFile[] file, HttpSession session,
-			HttpServletRequest request) throws Exception {
-		for(int i = 0; i < file.length;i++)
+	public ModelAndView boardWrite2(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
+		for (int i = 0; i < file.length; i++)
 			file[i].getOriginalFilename();
 		ModelAndView mv = new ModelAndView();
 		System.out.println(session.getServletContext().getRealPath("resources/upload/notice"));
+		System.out.println("boardVO : " + boardVO);
+		System.out.println("file : " + file);
+		System.out.println("session : " + session);
 		int result = boardNoticeService.boardWrite(boardVO, file, session);
 		String msg = "작성 실패";
 		if (result > 0) {
@@ -90,9 +102,13 @@ public class NoticeController {
 	}
 
 	@RequestMapping(value = "noticeUpdate", method = RequestMethod.POST)
-	public ModelAndView boardUpdate2(BoardVO boardVO) throws Exception {
+	public ModelAndView boardUpdate2(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		if (boardNoticeService.boardUpdate(boardVO) > 0) {
+		System.out.println("boardVO : " + boardVO);
+		System.out.println("file : " + file);
+		System.out.println("session : " + session);
+		int result = boardNoticeService.boardUpdate(boardVO, file, session);
+		if (result > 0) {
 			mv.setViewName("redirect:./noticeList");
 		} else {
 			mv.addObject("msg", "수정 실패");
@@ -107,9 +123,14 @@ public class NoticeController {
 	public ModelAndView boardUpdate(BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		boardVO = boardNoticeService.boardSelect(boardVO);
-		mv.addObject("vo", boardVO);
-		mv.addObject("board", "notice");
-		mv.setViewName("board/boardUpdate");
+		if (boardVO != null) {
+			BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
+			int size = boardNoticeVO.getFiles().size();
+			mv.addObject("size",size);
+			mv.addObject("vo", boardVO);
+			mv.addObject("board", "notice");
+			mv.setViewName("board/boardUpdate");
+		}
 		return mv;
 	}
 

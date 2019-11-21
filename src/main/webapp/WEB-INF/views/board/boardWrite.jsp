@@ -54,9 +54,7 @@
 				count++;
 			} else
 				alert('첨부파일은 5개까지 추가 가능합니다');
-
 		});
-
 		$('#files').on("click", ".del", function() {
  			$(this).parent().parent().remove();
 			count--;

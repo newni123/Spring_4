@@ -27,8 +27,7 @@
 		</collection>
 	</resultMap>
 	<delete id="noticeDelete" parameterType="noticeVO">
-		delete notice where num
-		= #{num}
+		delete notice where num = #{num}
 	</delete>
 	<update id="noticeUpdate" parameterType="BoardVO">
 		update notice set title

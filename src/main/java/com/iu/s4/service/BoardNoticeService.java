@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.s4.dao.BoardNoticeDAO;
 import com.iu.s4.dao.NoticeFilesDAO;
-import com.iu.s4.model.BoardNoticeVO;
 import com.iu.s4.model.BoardVO;
 import com.iu.s4.model.NoticeFilesVO;
 import com.iu.s4.util.FileSaver;
@@ -31,7 +30,11 @@ public class BoardNoticeService implements BoardService {
 		pager.makePage(boardNoticeDAO.boardCount(pager));
 		return boardNoticeDAO.boardList(pager);
 	}
-
+	
+	public int fileDelete(NoticeFilesVO noticeFilesVO) throws Exception {
+		return noticeFilesDAO.fileDelete(noticeFilesVO);
+	}
+	
 	@Override
 	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
@@ -58,9 +61,19 @@ public class BoardNoticeService implements BoardService {
 	}
 
 	@Override
-	public int boardUpdate(BoardVO boardVO) throws Exception {
+	public int boardUpdate(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
-		return boardNoticeDAO.boardUpdate(boardVO);
+		String realPath = session.getServletContext().getRealPath("resources/upload/notice");
+		NoticeFilesVO noticeFilesVO = new NoticeFilesVO();
+		int result = boardNoticeDAO.boardUpdate(boardVO); 
+		noticeFilesVO.setNum(boardVO.getNum());
+		for(MultipartFile multipartFile: file) {
+			String fileName = fileSaver.save3(realPath,multipartFile);
+			noticeFilesVO.setFname(fileName);
+			noticeFilesVO.setOname(multipartFile.getOriginalFilename());
+			noticeFilesDAO.fileWrite(noticeFilesVO); // update해도 어차피 테이블에 새로 추가하는거니까 그냥 fileWrite씀 
+		}
+		return result;
 	}
 
 	@Override

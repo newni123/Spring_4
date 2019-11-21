@@ -7,6 +7,9 @@
 	<insert id="fileWrite" parameterType="NoticeFilesVO">
 		insert into noticefiles values (file_seq.nextval,#{num},#{fname},#{oname})
 	</insert>
+	<delete id="fileDelete" parameterType="noticeFilesVO">
+		delete noticeFiles where fnum = #{fnum}  
+	</delete>
 	<select id="fileList" parameterType="Integer" resultType="NoticeFilesVO">
 		select * from noticeFiles where num = #{num}
 	</select>

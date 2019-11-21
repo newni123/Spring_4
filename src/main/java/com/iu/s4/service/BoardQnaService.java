@@ -1,3 +1,4 @@
+
 package com.iu.s4.service;
 
 import java.util.List;
@@ -10,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.s4.dao.BoardQnaDAO;
 import com.iu.s4.dao.QnaFilesDAO;
-import com.iu.s4.model.BoardQnaVO;
 import com.iu.s4.model.BoardVO;
 import com.iu.s4.model.QnaFilesVO;
 import com.iu.s4.util.FileSaver;
@@ -63,17 +63,29 @@ public class BoardQnaService implements BoardService {
 		qnaFilesVO.setNum(boardVO.getNum());
 		for(MultipartFile multipartFile: file) {
 			String fileName = fileSaver.save(realPath, multipartFile);
+			System.out.println(fileName);
+			qnaFilesVO.setFname(fileName);
+			qnaFilesVO.setOname(multipartFile.getOriginalFilename());
+			qnaFilesDAO.fileWrite(qnaFilesVO);
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int boardUpdate(BoardVO boardVO,MultipartFile[] file,HttpSession session) throws Exception {
+		// TODO Auto-generated method stub
+		String realPath = session.getServletContext().getRealPath("resources/upload/qna");
+		QnaFilesVO qnaFilesVO = new QnaFilesVO();
+		int result = boardQnaDAO.boardUpdate(boardVO);
+		qnaFilesVO.setNum(boardVO.getNum());
+		for(MultipartFile multipartFile : file) {
+			String fileName = fileSaver.save2(realPath, multipartFile);
 			qnaFilesVO.setFname(fileName);
 			qnaFilesVO.setOname(multipartFile.getOriginalFilename());
 			qnaFilesDAO.fileWrite(qnaFilesVO);
 		}
 		return result;
-	}
-
-	@Override
-	public int boardUpdate(BoardVO boardVO) throws Exception {
-		// TODO Auto-generated method stub
-		return boardQnaDAO.boardUpdate(boardVO);
 	}
 
 	@Override
