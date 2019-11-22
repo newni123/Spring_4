@@ -6,16 +6,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<c:import url="../layout/boot.jsp" />
+<c:import url="../layout/summernote.jsp" />
 </head>
 <body>
 	<c:import url="../layout/nav.jsp" />
-	<c:import url="../layout/boot.jsp" />
 	<h1>Write</h1>
 	<form action="${board}Write" method="post"
 		enctype="multipart/form-data">
 		<div class="container">
 			<div class="form-group">
-				<label for="title">titled:</label> <input type="text"
+				<label for="title">title:</label> <input type="text"
 					class="form-control del" id="title" placeholder="Enter title"
 					name="title">
 			</div>
@@ -29,6 +30,7 @@
 				<textarea style="height: 300px" class="form-control" id="contents"
 					placeholder="Enter contents" name="contents"></textarea>
 			</div>
+
 			<div id="files" class="form-group">
 				<div class="form-group">
 					<label for="image">file:</label> <input type="file" name="file"
@@ -42,9 +44,16 @@
 			<input type="button" class="btn btn-success" value="Add File"
 				id="btn">
 			<button type="submit" class="btn btn-default">Submit</button>
+			<input type="button" value="test" id="btn2">
 		</div>
 	</form>
 	<script type="text/javascript">
+		$("#btn2").click(function(){
+			alert($("#contents").summernote('code'));
+		});
+		$("#contents").summernote({
+			height : 500
+		});
 		var files = $("#files").html(); // 이벤트 태그 안에 넣으면 처음클릭시 1개.. 두번째 클릭시 2개.. 세번째 클릭시 4개.. 이런식으로 늘어남
 		var count = 0;
 		$("#files").empty();
