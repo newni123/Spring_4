@@ -1,5 +1,6 @@
 package com.iu.s4.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,16 +27,17 @@ public class BoardNoticeService implements BoardService {
 	// @Inject private HttpSession session;
 	private Object fileName;
 
-	public void summerFileDelete(String file,HttpSession session) throws Exception{
-	
-				
+	public boolean summerFileDelete(String file, HttpSession session) throws Exception {
+		String realPath = session.getServletContext().getRealPath("resources/upload/summerFile");
+		return fileSaver.fileDelete(realPath, file);
+
 	}
-	
-	public String summerFile(MultipartFile file,HttpSession session) throws Exception{
+
+	public String summerFile(MultipartFile file, HttpSession session) throws Exception {
 		String realPath = session.getServletContext().getRealPath("resources/upload/summerFile");
 		return fileSaver.save(realPath, file);
 	}
-	
+
 	public NoticeFilesVO fileSelect(NoticeFilesVO noticeFilesVO) throws Exception {
 		return noticeFilesDAO.filesSelect(noticeFilesVO);
 	}
@@ -69,11 +71,14 @@ public class BoardNoticeService implements BoardService {
 		int result = boardNoticeDAO.boardWrite(boardVO);
 		noticeFilesVO.setNum(boardVO.getNum());
 		for (MultipartFile multipartFile : file) {
-			if (multipartFile.getOriginalFilename() != "") { // Add File 누르고 실제로 파일을 올렸을때만 
+			if (multipartFile.getOriginalFilename() != "") { // Add File 누르고 실제로 파일을 올렸을때만
 				String fileName = fileSaver.save2(realPath, multipartFile);
 				noticeFilesVO.setFname(fileName);
 				noticeFilesVO.setOname(multipartFile.getOriginalFilename());
 				noticeFilesDAO.fileWrite(noticeFilesVO);
+				if (result < 1) {
+					throw new SQLException();
+				}
 			}
 		}
 		return result;
@@ -92,6 +97,9 @@ public class BoardNoticeService implements BoardService {
 				noticeFilesVO.setFname(fileName);
 				noticeFilesVO.setOname(multipartFile.getOriginalFilename());
 				noticeFilesDAO.fileWrite(noticeFilesVO); // update해도 어차피 테이블에 새로 추가하는거니까 그냥 fileWrite씀
+			}
+			if (result < 1) {
+				throw new SQLException();
 			}
 		}
 		return result;

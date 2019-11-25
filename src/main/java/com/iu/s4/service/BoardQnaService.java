@@ -1,6 +1,7 @@
 
 package com.iu.s4.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,15 +26,14 @@ public class BoardQnaService implements BoardService {
 	@Inject
 	private QnaFilesDAO qnaFilesDAO;
 
-	
 	public int boardReply(BoardVO boardVO) throws Exception {
 		int result = boardQnaDAO.boardReplyUpdate(boardVO);
-		/*int result = boardQnaDAO.boardReplyUpdate(parent);
-		parent.setTitle(boardVO.getTitle());
-		parent.setWriter(boardVO.getWriter());
-		parent.setContents(boardVO.getContents());
-		parent.setStep(parent.getStep() + 1);
-		parent.setDepth(parent.getDepth() + 1);*/
+		/*
+		 * int result = boardQnaDAO.boardReplyUpdate(parent);
+		 * parent.setTitle(boardVO.getTitle()); parent.setWriter(boardVO.getWriter());
+		 * parent.setContents(boardVO.getContents()); parent.setStep(parent.getStep() +
+		 * 1); parent.setDepth(parent.getDepth() + 1);
+		 */
 		return boardQnaDAO.boardReply(boardVO);
 
 	}
@@ -48,43 +48,50 @@ public class BoardQnaService implements BoardService {
 	@Override
 	public BoardVO boardSelect(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
-		/*boardVO = boardQnaDAO.boardSelect(boardVO);
-		BoardQnaVO boardQnaVO = (BoardQnaVO)boardVO;
-		List<QnaFilesVO> qnaFilesVOs = qnaFilesDAO.fileList(boardVO.getNum());
-		boardQnaVO.setFiles(qnaFilesVOs);*/
+		/*
+		 * boardVO = boardQnaDAO.boardSelect(boardVO); BoardQnaVO boardQnaVO =
+		 * (BoardQnaVO)boardVO; List<QnaFilesVO> qnaFilesVOs =
+		 * qnaFilesDAO.fileList(boardVO.getNum()); boardQnaVO.setFiles(qnaFilesVOs);
+		 */
 		return boardQnaDAO.boardSelect(boardVO);
 	}
 
 	@Override
-	public int boardWrite(BoardVO boardVO,MultipartFile[] file,HttpSession session) throws Exception {
+	public int boardWrite(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
 		String realPath = session.getServletContext().getRealPath("resources/upload/qna");
 		QnaFilesVO qnaFilesVO = new QnaFilesVO();
 		int result = boardQnaDAO.boardWrite(boardVO); // 작성될 글의 num을 받아와 files테이블에 넣기 위함
 		qnaFilesVO.setNum(boardVO.getNum());
-		for(MultipartFile multipartFile: file) {
+		for (MultipartFile multipartFile : file) {
 			String fileName = fileSaver.save(realPath, multipartFile);
 			System.out.println(fileName);
 			qnaFilesVO.setFname(fileName);
 			qnaFilesVO.setOname(multipartFile.getOriginalFilename());
 			qnaFilesDAO.fileWrite(qnaFilesVO);
 		}
-		
+		if (result < 1) {
+			throw new SQLException();
+		}
+
 		return result;
 	}
 
 	@Override
-	public int boardUpdate(BoardVO boardVO,MultipartFile[] file,HttpSession session) throws Exception {
+	public int boardUpdate(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
 		String realPath = session.getServletContext().getRealPath("resources/upload/qna");
 		QnaFilesVO qnaFilesVO = new QnaFilesVO();
 		int result = boardQnaDAO.boardUpdate(boardVO);
 		qnaFilesVO.setNum(boardVO.getNum());
-		for(MultipartFile multipartFile : file) {
+		for (MultipartFile multipartFile : file) {
 			String fileName = fileSaver.save2(realPath, multipartFile);
 			qnaFilesVO.setFname(fileName);
 			qnaFilesVO.setOname(multipartFile.getOriginalFilename());
 			qnaFilesDAO.fileWrite(qnaFilesVO);
+		}
+		if (result < 1) { 
+			throw new SQLException();
 		}
 		return result;
 	}
