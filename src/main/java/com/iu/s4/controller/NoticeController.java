@@ -25,16 +25,43 @@ public class NoticeController {
 
 	@Inject
 	private BoardNoticeService boardNoticeService;
+
+	@RequestMapping(value="summerFileDelete",method=RequestMethod.POST)
+	public ModelAndView summerFileDelete(String file,HttpSession session) throws Exception{
+		boolean check = boardNoticeService.summerFileDelete(file, session);
+		String result = "delete Fail";
+		if(check ) {
+			result = "delete success";
+		
+		}
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("common/common_ajaxResult");
+		mv.setViewName("summerFileDelete");
+		
+		return mv;
+	}
 	
+	
+	@RequestMapping(value="summerFile", method=RequestMethod.POST)
+	public ModelAndView summerFile(MultipartFile file,HttpSession session) throws Exception {
+		String fileName = boardNoticeService.summerFile(file, session);
+		ModelAndView mv = new ModelAndView();
+		System.out.println(session.getServletContext().getRealPath("resources/upload/summerFile"));
+		mv.setViewName("common/common_ajaxResult");
+		mv.addObject("result",fileName);
+		return mv;
+	}
+
 	@GetMapping(value = "fileDown")
 	public ModelAndView fileDown(NoticeFilesVO noticeFilesVO) throws Exception {
 		noticeFilesVO = boardNoticeService.fileSelect(noticeFilesVO);
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("file",noticeFilesVO);
+		mv.addObject("file", noticeFilesVO);
 		mv.setViewName("fileDown");
-		mv.addObject("board","notice");
+		mv.addObject("board", "notice");
 		return mv;
 	}
+
 	@PostMapping(value = "fileDelete")
 	public ModelAndView fileDelete(NoticeFilesVO noticeFilesVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
@@ -135,9 +162,9 @@ public class NoticeController {
 		ModelAndView mv = new ModelAndView();
 		boardVO = boardNoticeService.boardSelect(boardVO);
 		if (boardVO != null) {
-			BoardNoticeVO boardNoticeVO = (BoardNoticeVO)boardVO;
+			BoardNoticeVO boardNoticeVO = (BoardNoticeVO) boardVO;
 			int size = boardNoticeVO.getFiles().size();
-			mv.addObject("size",size);
+			mv.addObject("size", size);
 			mv.addObject("vo", boardVO);
 			mv.addObject("board", "notice");
 			mv.setViewName("board/boardUpdate");

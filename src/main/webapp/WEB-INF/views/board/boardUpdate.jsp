@@ -7,9 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<c:import url="../layout/boot.jsp" />
+<c:import url="../layout/summernote.jsp" />
 </head>
 <c:import url="../layout/nav.jsp" />
-<c:import url="../layout/boot.jsp" />
 <link href=<c:url value="../css/layout.css"/> rel="stylesheet">
 <link href=<c:url value="../css/reset.css"/> rel="stylesheet">
 <body>
@@ -31,7 +32,7 @@
 			<div class="form-group">
 				<label for="contents">contents:</label>
 				<textarea class="form-control" id="contents" style="height: 300px"
-					placeholder="Enter contents" name="contents">${vo.contents}</textarea>
+					placeholder="Enter contents" name="contents" >${vo.contents}</textarea>
 			</div>
 				<div id="files" class="form-group">
 				<div class="form-group">
@@ -56,6 +57,10 @@
 			</c:forEach>
 		</form>
 		<script type="text/javascript">
+			$("#contents").summernote({
+				height: 500
+			});
+			$("#contents").summernote('code','${vo.contents}');
 			var files = $("#files").html();
 			$("#files").empty();
 			var count = ${fn:length(vo.files)};

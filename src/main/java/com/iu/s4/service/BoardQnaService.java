@@ -25,6 +25,7 @@ public class BoardQnaService implements BoardService {
 	@Inject
 	private QnaFilesDAO qnaFilesDAO;
 
+	
 	public int boardReply(BoardVO boardVO) throws Exception {
 		int result = boardQnaDAO.boardReplyUpdate(boardVO);
 		/*int result = boardQnaDAO.boardReplyUpdate(parent);

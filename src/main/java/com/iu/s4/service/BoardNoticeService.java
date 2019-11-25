@@ -24,7 +24,18 @@ public class BoardNoticeService implements BoardService {
 	@Inject
 	private NoticeFilesDAO noticeFilesDAO;
 	// @Inject private HttpSession session;
+	private Object fileName;
 
+	public void summerFileDelete(String file,HttpSession session) throws Exception{
+	
+				
+	}
+	
+	public String summerFile(MultipartFile file,HttpSession session) throws Exception{
+		String realPath = session.getServletContext().getRealPath("resources/upload/summerFile");
+		return fileSaver.save(realPath, file);
+	}
+	
 	public NoticeFilesVO fileSelect(NoticeFilesVO noticeFilesVO) throws Exception {
 		return noticeFilesDAO.filesSelect(noticeFilesVO);
 	}

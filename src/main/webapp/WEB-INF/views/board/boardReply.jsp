@@ -7,9 +7,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+	<c:import url="../layout/boot.jsp" />
+	<c:import url="../layout/summernote.jsp" />
 <body>
 	<c:import url="../layout/nav.jsp" />
-	<c:import url="../layout/boot.jsp" />
 	<h1>Write</h1>
 	<form action="${board}Reply" method="post">
 		<div class="container">
@@ -33,5 +34,10 @@
 			<button type="submit" class="btn btn-default">Submit</button>
 		</div>
 	</form>
+	<script type="text/javascript">
+		$("#contents").summernote({
+			height : 500
+		});	
+	</script>
 </body>
 </html>
