@@ -39,7 +39,7 @@
 						<td style="text-align: center;">${vo.num}</td>
 						<td style="text-align: center;">
 						<c:catch>
-							<c:forEach begin="1" end="${vo.depth}">&nbsp&nbsp</c:forEach>
+							<c:forEach begin="1" end="${vo.depth}">└</c:forEach>
 						</c:catch>
 						<a href="${board}Select?num=${vo.num}">${vo.title}</a></td>
 						<td style="text-align: center;">${vo.writer}</td>
@@ -63,7 +63,7 @@
 			</c:if>
 		</ul>
 		<div>
-			<a href="./qnaWrite"> Write</a>
+			<a href="./${board}Write"> Write</a>
 		</div>
 		<script type="text/javascript">
 			var kind = '${pager.kind}'
