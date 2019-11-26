@@ -8,7 +8,7 @@
 <c:import url="../layout/boot.jsp" />
 </head>
 <body>
-<c:import url="../layout/nav.jsp" />
+	<c:import url="../layout/nav.jsp" />
 	<div class="container">
 		<h2>Striped Rows</h2>
 		<p>The .table-striped class adds zebra-stripes to a table:</p>
@@ -36,15 +36,13 @@
 			<tbody>
 				<c:forEach items="${list}" var="vo">
 					<tr>
-						<td >${vo.num}</td>
-						<td >
-						<c:catch>
-							<c:forEach begin="1" end="${vo.depth}">└</c:forEach>
-						</c:catch>
-						<a href="${board}Select?num=${vo.num}">${vo.title}</a></td>
-						<td >${vo.writer}</td>
-						<td >${vo.reg_date}</td>
-						<td >${vo.hit}</td>
+						<td>${vo.num}</td>
+						<td><c:catch>
+								<c:forEach begin="1" end="${vo.depth}">└</c:forEach>
+							</c:catch> <a href="${board}Select?num=${vo.num}">${vo.title}</a></td>
+						<td>${vo.writer}</td>
+						<td>${vo.reg_date}</td>
+						<td>${vo.hit}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
