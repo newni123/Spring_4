@@ -1,11 +1,13 @@
 package com.iu.s4.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.s4.dao.BoardNoticeDAO;
@@ -16,6 +18,7 @@ import com.iu.s4.util.FileSaver;
 import com.iu.s4.util.Pager;
 
 @Service
+@Transactional
 public class BoardNoticeService implements BoardService {
 	@Inject
 	private BoardNoticeDAO boardNoticeDAO;
@@ -23,19 +26,18 @@ public class BoardNoticeService implements BoardService {
 	private FileSaver fileSaver;
 	@Inject
 	private NoticeFilesDAO noticeFilesDAO;
-	// @Inject private HttpSession session;
-	private Object fileName;
 
-	public void summerFileDelete(String file,HttpSession session) throws Exception{
-	
-				
+	public boolean summerFileDelete(String file, HttpSession session) throws Exception {
+		String realPath = session.getServletContext().getRealPath("resources/upload/summerFile");
+		return fileSaver.fileDelete(realPath, file);
+
 	}
-	
-	public String summerFile(MultipartFile file,HttpSession session) throws Exception{
+
+	public String summerFile(MultipartFile file, HttpSession session) throws Exception {
 		String realPath = session.getServletContext().getRealPath("resources/upload/summerFile");
 		return fileSaver.save(realPath, file);
 	}
-	
+
 	public NoticeFilesVO fileSelect(NoticeFilesVO noticeFilesVO) throws Exception {
 		return noticeFilesDAO.filesSelect(noticeFilesVO);
 	}
@@ -61,7 +63,7 @@ public class BoardNoticeService implements BoardService {
 		// boardNoticeVO.setFiles(noticeFilesVOs);
 		return boardNoticeDAO.boardSelect(boardVO);
 	}
-
+	@Transactional
 	@Override
 	public int boardWrite(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		String realPath = session.getServletContext().getRealPath("resources/upload/notice");
@@ -69,16 +71,19 @@ public class BoardNoticeService implements BoardService {
 		int result = boardNoticeDAO.boardWrite(boardVO);
 		noticeFilesVO.setNum(boardVO.getNum());
 		for (MultipartFile multipartFile : file) {
-			if (multipartFile.getOriginalFilename() != "") { // Add File 누르고 실제로 파일을 올렸을때만 
+			if (multipartFile.getOriginalFilename() != "") { // Add File 누르고 실제로 파일을 올렸을때만
 				String fileName = fileSaver.save2(realPath, multipartFile);
 				noticeFilesVO.setFname(fileName);
 				noticeFilesVO.setOname(multipartFile.getOriginalFilename());
 				noticeFilesDAO.fileWrite(noticeFilesVO);
+				if (result < 1) {
+					throw new SQLException();
+				}
 			}
 		}
 		return result;
 	}
-
+	@Transactional
 	@Override
 	public int boardUpdate(BoardVO boardVO, MultipartFile[] file, HttpSession session) throws Exception {
 		// TODO Auto-generated method stub
@@ -92,6 +97,9 @@ public class BoardNoticeService implements BoardService {
 				noticeFilesVO.setFname(fileName);
 				noticeFilesVO.setOname(multipartFile.getOriginalFilename());
 				noticeFilesDAO.fileWrite(noticeFilesVO); // update해도 어차피 테이블에 새로 추가하는거니까 그냥 fileWrite씀
+			}
+			if (result < 1) {
+				throw new SQLException();
 			}
 		}
 		return result;
