@@ -37,7 +37,11 @@ public class BoardNoticeService implements BoardService {
 		String realPath = session.getServletContext().getRealPath("resources/upload/summerFile");
 		return fileSaver.save(realPath, file);
 	}
+	// @Inject private HttpSession session;
+	private Object fileName;
 
+	
+	
 	public NoticeFilesVO fileSelect(NoticeFilesVO noticeFilesVO) throws Exception {
 		return noticeFilesDAO.filesSelect(noticeFilesVO);
 	}
